@@ -1,0 +1,92 @@
+<html>
+
+<head>
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+
+    <script>
+
+        function customModelLoss(yPred, yTrue) {
+            return tf.square(yTrue.sub(yPred));
+        }
+
+        function initModel(learningRate) {
+            // create model
+            var layers = [tf.layers.dense({ inputShape: 1, units: 1, useBias: false, activation: 'sigmoid' })];
+            layers.push(tf.layers.dense({ units: 1, useBias: false, activation: 'tanh' }));
+            var model = tf.sequential({
+                layers: layers
+            });
+            // compile model
+            model.compile({
+                optimizer: tf.train.sgd(learningRate),
+                loss: this.customModelLoss,
+                metrics: ['accuracy']
+            });
+            return model;
+        }
+
+        function setModelWeights(model, weights) {
+            for (var i = 0; i < model.layers.length; i++) {
+                model.layers[i].setWeights([tf.tensor(parseFloat(weights[i]), model.layers[i].getWeights()[0].shape)]);
+            }
+        }
+
+        function getModelWeights(model) {
+            var weights = [];
+            for (var i = 0; i < model.layers.length; i++) {
+                weights.push(model.layers[i].getWeights()[0].arraySync());
+            }
+            return weights;
+        }
+
+        function trainModel(model, x, t) {
+            // create data
+            const data = tf.tensor([[x]]);
+            const labels = tf.tensor([[t]]);
+
+            // train model
+            model.fit(data, labels, {
+                epochs: 1,
+            });
+        }
+
+        function predictModel(model, input) {
+            // get intermediary layer output
+            var input = tf.tensor([[parseInt(input)]]);
+            var layers = model.layers;
+            var result = [];
+            for (var i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                var output = layer.apply(input);
+                input = output;
+                // flatten output
+                var output_flat = [].concat(...output.arraySync());
+                result.push(output_flat[0]);
+            }
+            return result;
+        }
+
+        var learningRate = 0.1;
+        this.model = this.initModel(learningRate);
+        var weights = [0.5, 0.2];
+        this.setModelWeights(this.model, weights);
+
+        function run() {
+            x = 0.5
+            t = 0.7
+            this.trainModel(this.model, x, t);
+            console.log(this.getModelWeights(this.model).flat(2));
+            //console.log(this.predictModel(this.model, 150));
+            console.log('-------');
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <button type="button" className="button" onClick="run()">Train</button>
+</body>
+
+</html>

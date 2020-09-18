@@ -1,0 +1,22 @@
+{
+  "name": "highschooldeeplearning",
+  "version": "1.0.0",
+  "license": "MIT",
+  "idyll": {
+    "theme": "default",
+    "layout": "centered",
+    "css": "styles.css",
+    "authorView": false
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^2.3.0",
+    "d3": "^4.0.0",
+    "idyll": "^4.0.0",
+    "idyll-d3-component": "^2.0.0",
+    "mathjs": "^7.2.0",
+    "react-mathjax2": "0.0.2"
+  },
+  "devDependencies": {
+    "gh-pages": "^0.12.0"
+  }
+}
