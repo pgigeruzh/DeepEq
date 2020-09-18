@@ -9,6 +9,7 @@ It contains the following files and directories (only the most important are lis
 | styles.css | CSS stylesheet                                               |
 | components | Custom react components                                      |
 | static     | Static files such as images                                  |
+| docs       | A copy of the build folder (for hosting on GitHub Pages)     |
 
 ## Installation
 
