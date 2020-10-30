@@ -7,13 +7,15 @@
     <script>
 
         function customModelLoss(yPred, yTrue) {
-            return tf.square(yTrue.sub(yPred));
+            var loss = tf.sum(tf.square(yTrue.sub(yPred)).mul(0.5));
+            console.log("loss: " + loss.dataSync());
+            return loss;
         }
 
         function initModel(learningRate) {
             // create model
-            var layers = [tf.layers.dense({ inputShape: 1, units: 1, useBias: false, activation: 'sigmoid' })];
-            layers.push(tf.layers.dense({ units: 1, useBias: false, activation: 'tanh' }));
+            var layers = [tf.layers.dense({ inputShape: 2, units: 2, useBias: false, activation: 'sigmoid' })];
+            layers.push(tf.layers.dense({ units: 2, useBias: false, activation: 'tanh' }));
             var model = tf.sequential({
                 layers: layers
             });
@@ -28,7 +30,7 @@
 
         function setModelWeights(model, weights) {
             for (var i = 0; i < model.layers.length; i++) {
-                model.layers[i].setWeights([tf.tensor(parseFloat(weights[i]), model.layers[i].getWeights()[0].shape)]);
+                model.layers[i].setWeights([tf.tensor(weights[i], model.layers[i].getWeights()[0].shape)]);
             }
         }
 
@@ -42,8 +44,8 @@
 
         function trainModel(model, x, t) {
             // create data
-            const data = tf.tensor([[x]]);
-            const labels = tf.tensor([[t]]);
+            const data = tf.tensor([x]);
+            const labels = tf.tensor([t]);
 
             // train model
             model.fit(data, labels, {
@@ -53,7 +55,7 @@
 
         function predictModel(model, input) {
             // get intermediary layer output
-            var input = tf.tensor([[parseInt(input)]]);
+            var input = tf.tensor([input]);
             var layers = model.layers;
             var result = [];
             for (var i = 0; i < layers.length; i++) {
@@ -62,25 +64,24 @@
                 input = output;
                 // flatten output
                 var output_flat = [].concat(...output.arraySync());
-                result.push(output_flat[0]);
+                result.push(output_flat);
             }
             return result;
         }
 
-        var learningRate = 0.1;
+        var learningRate = 0.5;
         this.model = this.initModel(learningRate);
-        var weights = [0.5, 0.2];
+        var weights = [[0.1, 0.2, 0.3, 0.4], [0.5, 0.6, 0.7, 0.8]];
         this.setModelWeights(this.model, weights);
 
         function run() {
-            x = 0.5
-            t = 0.7
+            x = [0.1, 0.3];
+            t = [0.2, 0.8];
             this.trainModel(this.model, x, t);
             console.log(this.getModelWeights(this.model).flat(2));
-            //console.log(this.predictModel(this.model, 150));
+            console.log(this.predictModel(this.model, x));
             console.log('-------');
         }
-
 
     </script>
 </head>

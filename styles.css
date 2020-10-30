@@ -9,6 +9,73 @@
   }
 }
 
+/* ReactFlow General */
+.react-flow {
+  min-height: 100vh;
+  margin: 0;
+}
+.react-flow__node-default .react-flow__handle {
+  background: black !important;
+}
+/*
+.react-flow__node.selected {
+  box-shadow: 0 0 3px 3px lightgreen !important;
+}
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: lightgreen !important;
+}
+*/
+.react-flow__handle {
+  width: 15px !important;
+  height: 15px !important;
+  border: 4px solid #fff !important;
+}
+.react-flow__handle-right {
+  right: -8px !important;
+}
+.react-flow__handle-left {
+  left: -8px !important;
+}
+.react-flow__edge-path {
+  stroke-width: 3 !important;
+}
+/* ReactFlow Layout */
+.providerflow {
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+}
+.providerflow aside {
+  border-right: 1px solid #eee;
+  padding: 15px 10px;
+  font-size: 12px;
+  background: #fcfcfc;
+}
+.providerflow aside .description {
+  margin-bottom: 10px;
+}
+.providerflow aside .title {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.providerflow aside .transform {
+  margin-bottom: 20px;
+}
+.providerflow .reactflow-wrapper {
+  flex-grow: 1;
+  height: 100%;
+}
+@media screen and (min-width: 1000px) {
+  .providerflow {
+    flex-direction: row;
+  }
+
+  .providerflow aside {
+    width: 20%;
+    min-width: 350px;
+  }
+}
+
 /* Exercise Creator */
 .exercise-creator {
   min-height: 100vh;

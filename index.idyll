@@ -1,8 +1,12 @@
 [meta title:"Deep Learning Theory for High School Students" description:"Deep Learning Theory for High School Students" /]
 
 [FullWidth]
-  [exerciseCreator/]
+  [flowChart/]
 [/FullWidth]
+
+// [FullWidth]
+//   [exerciseCreator/]
+// [/FullWidth]
 
 [var name:"scrollerStep" value:0 /]
 [var name:"scrollerProgress" value:0 /]
