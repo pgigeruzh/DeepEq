@@ -1,14 +1,10 @@
-/*
-    ToDO: 
-    - Convert to dynamic programming
-    - Node connection validation 1:n
-    - Bug when backpropagating multiple connection neurons (due to summation of errors)
-*/
-
 import React, { useState, useEffect } from 'react';
 import ReactFlow, { ReactFlowProvider, removeElements, addEdge, Controls } from 'react-flow-renderer';
 import MathJax from 'react-mathjax2';
-import { GithubPicker, SketchPicker, TwitterPicker } from 'react-color'
+import { GithubPicker } from 'react-color'
+import { VictoryChart, VictoryAxis, VictoryLine, VictoryScatter } from 'victory';
+const { filterChildren, mapChildren } = require('idyll-component-children');
+const AriaModal = require('react-aria-modal');
 const math = require('mathjs');
 
 const initialElements = [
@@ -25,9 +21,10 @@ const initialElements = [
     { source: "n1", target: "y0", id: "w5", label: "w6: 0.6", data: { value: 0.6, color: '#4A4A4A' } },
 ];
 
-const FlowChart = () => {
+const FlowChart = (props) => {
     // react state hooks
     const [elements, setElements] = useState(initialElements);
+    const [elementsBackup, setElementsBackup] = useState(null);
     const [inputIdCounter, setInputIdCounter] = useState(initialElements.filter(element => element.id.includes("x")).length);
     const [nodeIdCounter, setNodeIdCounter] = useState(initialElements.filter(element => element.id.includes("n")).length);
     const [edgeIdCounter, setEdgeIdCounter] = useState(initialElements.filter(element => element.id.includes("w")).length);
@@ -35,9 +32,11 @@ const FlowChart = () => {
     const [currentSelection, setCurrentSelection] = useState(null);
     const [learningRate, setLearningRate] = useState(0.5);
     const [loss, setLoss] = useState(0.0);
+    const [lossHistory, setLossHistory] = useState([]);
     const [runBackpropagation, setRunBackpropagation] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0, zoom: 1.0 });
     const [visualizationSettings, setVisualizationSettings] = useState("forwardpropagation");
+    const [tutorialIndex, setTutorialIndex] = useState(null);
     useEffect(() => {
         // run forward propagation for each initial node
         let forwardresults = [];
@@ -105,7 +104,7 @@ const FlowChart = () => {
         setRunBackpropagation(true);
     };
     const onSelectionChange = (els) => { setCurrentSelection(els); };
-    // helper functions
+    // reactflow helper functions
     const pad = (str, length, char = ' ') => str.padStart((str.length + length) / 2, char).padEnd(length, char);
     const getNodeValue = (nodeId) => { try { return elements.find(element => element.id == nodeId) } catch (e) { return null } };
     const setNodeValue = (nodeId, args) => {
@@ -160,7 +159,10 @@ const FlowChart = () => {
             })
         );
     };
+    // other helper functions
     const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    const tutorials = filterChildren(props.children, c => { return c.type.name && c.type.name.toLowerCase() === 'step'; });
+    const hideTutorials = () => { setTutorialIndex(null); };
     // main algorithms
     function forwardpropagation(graph, node, result) {
         // get all ingoing edges from node
@@ -293,43 +295,55 @@ const FlowChart = () => {
                     <div className="centered">
                         <button style={{ width: "45%" }} type="button" className="button" onClick={() => {
                             let newElement = {
-                                id: 'x' + inputIdCounter, data: { label: 'x' + inputIdCounter + ": 0.0" + ", \u0278(x)=x", value: 0.0, activation: 'x', color: '#4A90E2' },
+                                id: 'x' + inputIdCounter, data: { label: 'x' + inputIdCounter + ": 0.0", value: 0.0, activation: 'x', color: '#4A90E2' },
                                 position: { x: randomInt(20, 100) - position.x, y: randomInt(10, 50) - position.y }, sourcePosition: 'right', type: 'input',
                                 style: { border: "2px solid #4A90E2", stroke: '#4A90E2' }
                             };
                             setElements([...elements, newElement]);
                             setInputIdCounter(inputIdCounter + 1);
                             setCurrentSelection([{ id: 'x' + inputIdCounter }]);
+                            setLossHistory([]);
                         }}>Add Input</button>
                         <button style={{ width: "45%" }} type="button" className="button" onClick={() => {
+                            let nodeLabelValue = pad('y' + outputIdCounter + ":\u28000.0", 16, '\u2800');
+                            let nodeLabelTrue = pad(" t" + outputIdCounter + ":\u28000.0", 13, '\u2800');
+                            let nodeLabelActivation = pad(" \u03B1(x)=x", 16, '\u2800');
                             let newElement = {
-                                id: 'y' + outputIdCounter, data: { label: 'y' + outputIdCounter + ": 0.0" + ", \u0278(x)=x", value: 0.0, activation: 'x', true: 0.0, color: '#D0021B', },
+                                id: 'y' + outputIdCounter, data: { label: nodeLabelValue + nodeLabelTrue + nodeLabelActivation, value: 0.0, activation: 'x', true: 0.0, color: '#D0021B', },
                                 position: { x: randomInt(400, 500) - position.x, y: randomInt(10, 50) - position.y }, targetPosition: 'left', type: 'output',
                                 style: { border: "2px solid #D0021B", stroke: '#D0021B' }
                             };
                             setElements([...elements, newElement]);
                             setOutputIdCounter(outputIdCounter + 1);
                             setCurrentSelection([{ id: 'y' + outputIdCounter }]);
+                            setLossHistory([]);
                         }}>Add Output</button>
                     </div>
                     <div className="centered">
                         <button style={{ width: "45%" }} type="button" className="button" onClick={() => {
+                            let nodeLabelValue = pad('n' + nodeIdCounter + ":\u28000.0", 16, '\u2800');
+                            let nodeLabelActivation = pad(" \u03B1(x)=x", 16, '\u2800');
                             let newElement = {
-                                id: 'n' + nodeIdCounter, data: { label: 'n' + nodeIdCounter + ": 0.0" + ", \u0278(x)=x", value: 0.0, activation: 'x', color: '#4A4A4A' },
+                                id: 'n' + nodeIdCounter, data: { label: nodeLabelValue + nodeLabelActivation, value: 0.0, activation: 'x', color: '#4A4A4A' },
                                 position: { x: randomInt(200, 300) - position.x, y: randomInt(10, 50) - position.y }, targetPosition: 'left', sourcePosition: 'right',
                                 style: { border: "2px solid #4A4A4A", stroke: '#4A4A4A' }
                             };
                             setElements([...elements, newElement]);
                             setNodeIdCounter(nodeIdCounter + 1);
                             setCurrentSelection([{ id: 'n' + nodeIdCounter }]);
+                            setLossHistory([]);
                         }}>Add Node</button>
                         <button style={{ width: "45%" }} type="button" className="button" onClick={() => {
+                            // clear everything
                             setElements([]);
                             setInputIdCounter(0);
                             setNodeIdCounter(0);
                             setEdgeIdCounter(0);
                             setOutputIdCounter(0);
                             setCurrentSelection(null);
+                            setLossHistory([]);
+                            // run backpropagation
+                            setRunBackpropagation(true);
                         }}>Clear All</button>
                     </div>
                     <div>
@@ -394,28 +408,85 @@ const FlowChart = () => {
                                 Loss: <MathJax.Node inline>{'sum_i 1/2 (t_i-y_i)^2 = ' + parseFloat(Number(loss).toFixed(4))}</MathJax.Node>
                             </div>
                         </MathJax.Context>
-                        Learning Rate: <input style={{ width: "130px" }} type="text" value={learningRate} onChange={(e) => { setLearningRate(e.target.value) }} />
+                        Learning Rate: <input style={{ width: "80px" }} type="text" value={learningRate} onChange={(e) => { setLearningRate(e.target.value) }} />
                         <button type="button" className="button" onClick={() => {
+                            if (elementsBackup == null) setElementsBackup(elements);
+                            setLossHistory([...lossHistory, loss]);
                             gradientdescent(elements, learningRate);
                         }}>Train</button>
+                        <button type="button" className="button" onClick={() => {
+                            if (elementsBackup != null) {
+                                setElements(elementsBackup);
+                                setElementsBackup(null);
+                            }
+                            setLossHistory([]);
+                            // run backpropagation
+                            setRunBackpropagation(true);
+                        }}>Reset</button>
+                        {!isNaN(loss) ?
+                            <VictoryChart domain={{ x: [0, Math.max(10, lossHistory.length)], y: [0, Math.max(Math.max(Math.max.apply(Math, lossHistory), 0), loss)] }}>
+                                <VictoryAxis label="iterations" />
+                                <VictoryAxis dependentAxis />
+                                <VictoryScatter data={[{ x: lossHistory.length, y: loss }]} size={5} style={{ data: { fill: "#c43a31" } }} />
+                                {lossHistory.map((item, index) => {
+                                    return <VictoryScatter data={[{ x: index, y: item }]} size={5} style={{ data: { fill: "#c43a31" } }} />
+                                })}
+                                <VictoryLine style={{ data: { stroke: "#c43a31" } }} data={[{ x: lossHistory.length - 1, y: lossHistory[lossHistory.length - 1] }, { x: lossHistory.length, y: loss },]} />
+                                {lossHistory.map((item, index, array) => {
+                                    if (index > 0) {
+                                        return <VictoryLine style={{ data: { stroke: "#c43a31" } }} data={[
+                                            { x: index - 1, y: array[index - 1] },
+                                            { x: index, y: array[index] },
+                                        ]} />
+                                    }
+                                })}
+                            </VictoryChart>
+                            : false}
                     </div>
                     <div>
                         <p></p>
                         <div className="grid-title">Visualization Settings</div>
                         <p></p>
-                        <input type="radio" id="forwardpropagation" name="visualization" value="forwardpropagation" checked={visualizationSettings == "forwardpropagation"} onClick={() => {
-                            setVisualizationSettings("forwardpropagation");
-                            // run backpropagation
-                            setRunBackpropagation(true);
-                        }} />
-                        <label for="forwardpropagation">Forwardpropagation (Weights)</label>
-                        <br></br>
-                        <input type="radio" id="backpropagation" name="visualization" value="backpropagation" checked={visualizationSettings == "backpropagation"} onClick={() => {
-                            setVisualizationSettings("backpropagation");
-                            // run backpropagation
-                            setRunBackpropagation(true);
-                        }} />
-                        <label for="backpropagation">Backpropagation (Gradients)</label>
+                        <label style={{ fontSize: "12px" }} className="container">Forwardpropagation (Weights)
+                            <input
+                                type="radio"
+                                checked={visualizationSettings == "forwardpropagation"}
+                                value={"forwardpropagation"}
+                                name={"forwardpropagation"}
+                                onChange={() => {
+                                    setVisualizationSettings("forwardpropagation");
+                                    // run backpropagation
+                                    setRunBackpropagation(true);
+                                }}
+                            />
+                            <span style={{ height: "20px", width: "20px" }} class="checkmark"></span>
+                        </label>
+                        <p></p>
+                        <label style={{ fontSize: "12px" }} className="container">Backpropagation (Gradients)
+                            <input
+                                type="radio"
+                                checked={visualizationSettings == "backpropagation"}
+                                value={"backpropagation"}
+                                name={"backpropagation"}
+                                onChange={() => {
+                                    setVisualizationSettings("backpropagation");
+                                    // run backpropagation
+                                    setRunBackpropagation(true);
+                                }}
+                            />
+                            <span style={{ height: "20px", width: "20px" }} class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <p></p>
+                        <div className="grid-title">Tutorial</div>
+                        <p></p>
+                        {props.tutorials.map((item, index) => (
+                            <a href="#" onClick={() => { setTutorialIndex(index) }}><h3 style={{ margin: "10px" }}>{item}</h3></a>
+                        ))}
+                        <p></p>
+                        <p></p>
+                        <p>(This tutorial was created using <a href="https://idyll-lang.org">Idyll)</a></p>
                     </div>
                 </aside>
                 <div className="reactflow-wrapper">
@@ -423,14 +494,14 @@ const FlowChart = () => {
                     {visualizationSettings == "forwardpropagation" ?
                         <div className="centered" dangerouslySetInnerHTML={{
                             __html: (currentSelection != null && !currentSelection[0].id.includes("w"))
-                                ? currentSelection[0].id + " = " + getNodeValue(currentSelection[0].id).data.symbolicEquation + " = " + parseFloat(Number(getNodeValue(currentSelection[0].id).data.value).toFixed(4))
-                                : "Please select a node!"
+                                ? "<h2>" + currentSelection[0].id + " = " + getNodeValue(currentSelection[0].id).data.symbolicEquation + " = " + parseFloat(Number(getNodeValue(currentSelection[0].id).data.value).toFixed(4)) + "</h2>"
+                                : "<h2>Please select a node!</h2>"
                         }} />
                         :
                         <div className="centered" dangerouslySetInnerHTML={{
                             __html: (currentSelection != null)
-                                ? currentSelection[0].id + "' = " + getNodeValue(currentSelection[0].id).data.symbolicGradient + " = " + parseFloat(Number(getNodeValue(currentSelection[0].id).data.gradient).toFixed(4))
-                                : "Please select a node!"
+                                ? "<h2>" + currentSelection[0].id + "' = " + getNodeValue(currentSelection[0].id).data.symbolicGradient + " = " + parseFloat(Number(getNodeValue(currentSelection[0].id).data.gradient).toFixed(4)) + "</h2>"
+                                : "<h2>Please select a node!</h2>"
                         }} />}
                     <p></p>
                     <ReactFlow
@@ -442,6 +513,20 @@ const FlowChart = () => {
                     />
                 </div>
             </ReactFlowProvider>
+            {tutorialIndex != null ? <AriaModal
+                titleText="demo one"
+                initialFocus="#demo-one-modal"
+                onExit={hideTutorials}
+                underlayStyle={{ paddingTop: '2em' }}
+            >
+                <div id="demo-one-modal" className="modal">
+                    <div className="modal-body">
+                        {tutorials[tutorialIndex]}
+                    </div>
+                </div>
+            </AriaModal>
+                : false}
+
         </div>
     );
 }

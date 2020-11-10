@@ -1,24 +1,88 @@
 [meta title:"Deep Learning Theory for High School Students" description:"Deep Learning Theory for High School Students" /]
 
 [FullWidth]
-  [flowChart/]
-[/FullWidth]
+[flowChart tutorials:`["1. Perceptron", "2. Loss Function", "3. Gradient Descent", "4. Backpropagation"]`]
 
-// [FullWidth]
-//   [exerciseCreator/]
-// [/FullWidth]
-
-[var name:"scrollerStep" value:0 /]
-[var name:"scrollerProgress" value:0 /]
-[Scroller currentStep:scrollerStep progress:scrollerProgress]
 [Step]
-# Machine Perception
 
-Teaching a computer is a difficult task because computers do not "think" like humans.
-At their core, computers just shuffle around numbers. 
-Hence, it is important to keep in mind that a computer only preceives numbers.
-For example, a (digital) picture is composed of millions of pixels, each of which represented by a number.
+## Perceptron
+
+A biological brain consists of many interconnected neurons, which is what scientists tried to replicate.
+As a result, they came up with the notion of an artificial neuron called a perceptron.
+The perceptron is the foundation of deep learning and is made up of several inputs [equation] x_i [/equation].
+Some inputs are more important than others which is why they are multiplied with parameters called weights [equation] w_i [/equation].
+For example, if we want to train a computer to distinguish between a dog and a spider, the number of legs would be more important (higher weight) than the color.
+Finally, everything is summed up and an activation function [equation] a(x) [/equation] is applied.
+An interactive perceptron with three inputs and activation function [equation] tanh(x) [/equation] can be found below.
+
+[var name:"perceptronX1" value:1 /]
+[var name:"perceptronX2" value:2 /]
+[var name:"perceptronX3" value:3 /]
+[var name:"perceptronW1" value:1 /]
+[var name:"perceptronW2" value:1 /]
+[var name:"perceptronW3" value:1 /]
+[derived name:"perceptronX4" value:`Number(perceptronX1*perceptronW1+perceptronX2*perceptronW2+perceptronX3*perceptronW3).toFixed(1)` /]
+[derived name:"perceptronY" value:`Math.tanh(Number(perceptronX1*perceptronW1+perceptronX2*perceptronW2+perceptronX3*perceptronW3)).toFixed(1)` /]
+[SVG viewBox:"0 0 1000 500"]
+  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"150" cy:"100" rx:"45" ry:"45"/]
+  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"150" cy:"250.00001" rx:"45" ry:"45"/]
+  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"150" cy:"400" rx:"45" ry:"45"/]
+  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"500" cy:"250.00001" rx:"45" ry:"45"/]
+  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"849.23077" cy:"250.00001" rx:"45" ry:"45"/]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"45.49999" y:"410.50002" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]x[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"70.49999" y:"423.50002" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]3[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"45.49999" y:"265.50001" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]x[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"70.49999" y:"278.50001" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]2[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"45.49999" y:"116.49999" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]x[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"70.49999" y:"129.49999" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]1[/text]
+  [SvgPath d:"m261.5,49.5" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" stroke:"#000" fill:"#fff"/]
+  [SvgPath stroke:"black" d:"m194.5,99.58592c296.28027,-2.82856 288.33124,16.77148 303,104.91408" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" fill:"#fff"/]
+  [SvgPath stroke:"black" d:"m194.5,247.5l261.5,-1.5" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" fill:"#fff"/]
+  [SvgPath stroke:"black" d:"m194.5,398.07526c296.28027,2.79245 288.33124,-16.55746 303,-103.57526" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" fill:"#fff"/]
+  [SvgPath stroke:"#000" d:"m544.85602,250.51953l259.19238,-1.5" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" fill:"#fff"/]
+  [SvgText value:perceptronX1 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"115.76917" x:"138.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:perceptronX2 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"265.76926" x:"137.30751" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:perceptronX3 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"415.00011" x:"138.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"238.12029" y:"79.57689" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]w[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"269.50491" y:"92.57689" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]1[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"238.11549" y:"225.11544" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]w[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"269.50011" y:"238.11544" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]2[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"238.11549" y:"376.11544" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]w[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"269.50011" y:"389.11544" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]3[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"288.49999" y:"80.49999" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]:[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"288.49999" y:"226.49999" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]:[/text]
+  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"288.49999" y:"375.49999" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]:[/text]
+  [SvgText value:perceptronW1 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"79.76917" x:"331.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:perceptronW2 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"226.76917" x:"331.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:perceptronW3 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"375.76917" x:"331.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:perceptronX4 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"265.76917" x:"470" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:"activation" textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"30" y:"240" x:"600" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:"(tanh)" textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"30" y:"280" x:"620" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:perceptronY textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"265" x:"820" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+  [SvgText value:"y" textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"260" x:"940" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
+[/SVG]
+X1: [customRange className:"slider" style:`{width: '22%'}` value:perceptronX1 min:0 max:3 step:1/]
+X2: [customRange className:"slider" style:`{width: '22%'}` value:perceptronX2 min:0 max:3 step:1 /]
+X3: [customRange className:"slider" style:`{width: '22%'}` value:perceptronX3 min:0 max:3 step:1 /]
+W1: [customRange className:"slider" style:`{width: '22%'}` value:perceptronW1 min:0 max:1 step:0.1 /]
+W2: [customRange className:"slider" style:`{width: '22%'}` value:perceptronW2 min:0 max:1 step:0.1 /]
+W3: [customRange className:"slider" style:`{width: '22%'}` value:perceptronW3 min:0 max:1 step:0.1 /]
+
+The example from above can be written in one equation:
+
+[equation display:true] y = tanh(x_1*w_1+x_2*w_2+x_3*w_3) [/equation]
+
+where [equation] y [/equation] is the prediction. But what is the purpose of the activation function?
+It adds non-linearity, and thus, makes complex behavior possible in the first place. Why?
+Because the result of chaining two linear perceptrons together is still linear, thus, does not provide a better prediction:
+
+[equation display:true] y_1 = x*w_1 [/equation]
+[equation display:true latex:"y_2 = y_1*w_2 = x*\overbrace{w_1*w_2}^{w}" /]
+
+It is important to keep in mind that that the input [equation] x [/equation] represents anything a computer can measure e.g. a pixel.
 Generally, a pixel can have a value between 0 and 255 where zero means that the pixel is turned off.
+By mixing red, green, and blue pixels, nearly every color can be created e.g. (red=255, green=255, blue=0) results in yellow.
+A (digital) image is simply a composition of millions of pixels.
 
 [var name:"pixelValue" value:0.5 /]
 [div className:"centered"]
@@ -27,45 +91,39 @@ Generally, a pixel can have a value between 0 and 255 where zero means that the 
   [customRange className:"slider" value:pixelValue min:0 max:1 step:0.01 /]
 [/div]
 
-[var name:"showPerceptionExercises" value:false /]
-[button className:"button" onClick:`showPerceptionExercises ? showPerceptionExercises = false : showPerceptionExercises = true` style:`{display: showPerceptionExercises ? "none" : "block"}`]Show Exercises[/button]
-[button className:"button" onClick:`showPerceptionExercises ? showPerceptionExercises = false : showPerceptionExercises = true` style:`{display: showPerceptionExercises ? "block" : "none"}`]Hide Exercises[/button]
-[div style:`{display: showPerceptionExercises ? "block" : "none"}`]
-### What color does a pixel with value 0 have?
-A value of 0 means that the pixel is turned off, hence, the color is black.
+## Learning Task
+Create a perceptron with red, green, and blue pixels as inputs and connect them to an output node.
+Try different input values, weights, and activation functions and think about the effect they have on the flow of information.
 
-### What color does a pixel with value 255 have?
-It depends: 
-For a "white" pixel, the color is white. 
-For a "red" pixel, the color is red.
-Usually, it is assumed that the pixel is "white" (grayscale image) when not specified otherwise.
+![example](static/images/task_perceptron.gif)
 
-### How is a color image created with only pixels?
-Three types of pixels are needed for a color image: red, green, and blue.
-By mixing these three colors e.g. turn-on red/green (red=255, green=255) and turn-off blue (blue=0), nearly every color can be created.
-[/div]
-
+## Hints
+- What is the equation of the perceptron?
+- Use the equation to calculate the prediction value of e.g. red=255, green=120, blue=0, weights=0.5, a(x)=x. What is the interpretation?
+- Change the weight of the red pixel to 1 and all other weights to 0. What is the interpretation?
+- Use the activation function [equation] a(x)=tanh(x) [/equation]. What is the value of the prediction? How does the interpretation change? When is [equation] tanh(x) [/equation] -1 or 1?
+- Another popular activation function is called "sigmoid" ([equation] a(x)=1/(1+e^{-x}) [/equation]). Draw the sigmoid function as well as [equation] a(x)=x [/equation] and [equation] a(x)=tanh(x) [/equation]. What range can they take?
 
 [/Step]
-[/Scroller]
-
-[Scroller currentStep:scrollerStep progress:scrollerProgress]
 [Step]
-# Loss Function
 
-Identifing and naming objects in an image is no challenge for humans.
+## Loss Function
+
+Identifying and naming objects in an image is no challenge for humans.
 Every child can identify a dog and, if not, learn it in an instant e.g. by showing a dog nearby.
 To translate this "learning by example" to a computer, it is necessary to quantify (express as numbers) this process.
 Just like grades in school, the computer has to know how good it is.
 For example, when a computer identifies a car instead of a dog, the grade should be low. 
 When it mistakes a Yorkshire Terrier for a West Highland Terrier, it should get a comparatively high grade.
-One possible way to represent such a "grade" is the mathematical difference e.g. dog minus cat. 
-In machine learning terms, this is called a loss function and formalized as follows:
+In machine learning terms, this is called a loss function.
+As opposed to school grades - the smaller the loss, the better:
 
-[equation display:true] loss = (t-y)^2 [/equation] 
+[equation display:true] loss = \frac{1}{2}(t-y)^2 [/equation]
 
-where [equation] t [/equation] is the true label a human provides and [equation] y [/equation] is the prediction of the computer.
-As opposed to school grades - the smaller the loss, the better.
+where [equation] t [/equation] is the true label a human provides, and [equation] y [/equation] is the prediction of the computer.
+Why is it multiplied by [equation] 1/2 [/equation] and squared?
+Because [equation] 1/2 [/equation] simplifies the derivative (next section), and the square creates a lower boundary for the loss (deep learning minimizes the loss, next section).
+There is no particular reason to choose this exact loss function (e.g. [equation] |t-y| [/equation] works as well), but the mathematical properties make it easier to work with.
 
 [var name:"lossAnimal" value:"static/images/dog_2.svg" /]
 [derived name:'lossAnimalValue' value:`lossAnimal=="static/images/dog_2.svg" ? 1 : (lossAnimal=="static/images/cat.svg" ? 4 : 8)` /]
@@ -95,7 +153,6 @@ As opposed to school grades - the smaller the loss, the better.
 
 As mentioned in the previous section, an image consists of millions of pixels.
 Hence, the loss has to be calculated (and summed together) for each of those pixels.
-To keep things simple and understandable, we will focus on only one pixel from here on out.
 For example, a loss function with one pixel might look like this:
 
 [var name:lossPixel1 value:180 /]
@@ -133,262 +190,124 @@ For example, a loss function with one pixel might look like this:
 True: [customRange className:"slider" value:lossPixel1 min:0 max:255 /]
 Predicted: [customRange className:"slider" value:lossPixel2 min:0 max:255 /]
 
-[var name:"showLossExercises" value:false /]
-[button className:"button" onClick:`showLossExercises ? showLossExercises = false : showLossExercises = true` style:`{display: showLossExercises ? "none" : "block"}`]Show Exercises[/button]
-[button className:"button" onClick:`showLossExercises ? showLossExercises = false : showLossExercises = true` style:`{display: showLossExercises ? "block" : "none"}`]Hide Exercises[/button]
-[div style:`{display: showLossExercises ? "block" : "none"}`]
-### Intuitively, which prediction should have a lower loss when the actual object is a smartphone? Table or calculator?
-Even though both predictions are wrong, a calculator looks more like a smartphone and should have a lower loss.
+## Learning Task
+Use the perceptron from the previous task.
+Try different true values [equation] t [/equation] and think about how they affect the loss.
+Moreover, think about how the input, weights, and activation function change the loss.
 
-### You see a black pixel but the computer says it's a white one, how large is the loss?
-[equation] loss=(0-255)^2 = 65025 [/equation]
+![example](static/images/task_loss_function.gif)
 
-### Why is the loss function squared?
-Because the loss is chosen to be positive, or how would you interpret a loss of -1?
-There exist a variety of different loss functions among which the mean absolute error [equation] |t-y| [/equation].
-
-### Calculate the loss given the function loss=1/4(t-y)^2 with t=4 and y=2.
-[equation] loss=1/4(4-2)^2=1 [/equation]
-
-### What form does a loss function for complete pictures have (instead of a single pixel)?
-The values are vectorized and summed together, for example: [equation display:true latex:"loss=\sum (\begin{bmatrix} 255 \\ 148 \\ ... \\ 45 \end{bmatrix} - \begin{bmatrix} 243 \\ 23 \\ ... \\ 50 \end{bmatrix})^2 = (255-243)^2 + ... + (45-50)^2" /]
-
-[/div]
+## Hints
+- Because of the range of [equation] tanh(x) [/equation] (between -1 and 1), it is better to use inputs with a similar range. For example, a pixel can be represented by values between zero and one where 1 means completely turned on).
+- When is it possible for a loss to never approach zero? Try different true values and activation functions.
 
 [/Step]
-[/Scroller]
-
-[Scroller currentStep:scrollerStep progress:scrollerProgress]
 [Step]
-# Prediction
 
-In the last section, we have learned about the loss function where the true label is provided by a human. But what about the prediction?
-To make a prediction, the computer needs some input [equation] x [/equation] to begin with e.g. an image from a camera. 
-Then, the computer has to transform the input in a way that the result is the correct prediction.
-Fortunately, mathematics can be used to model this behavior in one simple equation:
+## Gradient Descent
 
-[equation display:true] y = f(x) [/equation]
-
-In other words, the computer can be compared to a student who receives an exercise [equation] x [/equation] and tries to come up with a solution [equation] y [/equation].
-The thinking in between the exercise and the solution is the function [equation] f [/equation].
-In deep learning, the function [equation] f(x) [/equation] is inspired by the human brain.
-A biological brain consists of many interconnected neurons, which is what scientists tried to replicate. 
-As a result, they came up with the notion of an artificial neuron called a perceptron.
-The perceptron is the foundation of deep learning and is made up of several inputs [equation] x [/equation] and some parameters/weights [equation] w [/equation].
-The idea is to multiply each input with the corresponding weight and sum them up e.g. 
-
-[equation display:true] y = x_1*w_1+x_2*w_2+x_3*w_3 [/equation]
-
-An interactive perceptron with three inputs can be found below:
-
-[var name:"perceptronX1" value:1 /]
-[var name:"perceptronX2" value:2 /]
-[var name:"perceptronX3" value:3 /]
-[var name:"perceptronW1" value:1 /]
-[var name:"perceptronW2" value:1 /]
-[var name:"perceptronW3" value:1 /]
-[derived name:"perceptronX4" value:`Number(perceptronX1*perceptronW1+perceptronX2*perceptronW2+perceptronX3*perceptronW3).toFixed(1)` /]
-[SVG viewBox:"0 0 1000 500"]
-  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"150" cy:"100" rx:"45" ry:"45"/]
-  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"150" cy:"250.00001" rx:"45" ry:"45"/]
-  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"150" cy:"400" rx:"45" ry:"45"/]
-  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"500" cy:"250.00001" rx:"45" ry:"45"/]
-  [ellipse fill:"#fff" stroke:"#000" strokeWidth:"1.5" cx:"849.23077" cy:"250.00001" rx:"45" ry:"45"/]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"45.49999" y:"410.50002" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]x[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"70.49999" y:"423.50002" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]3[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"45.49999" y:"265.50001" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]x[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"70.49999" y:"278.50001" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]2[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"45.49999" y:"116.49999" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]x[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"70.49999" y:"129.49999" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]1[/text]
-  [SvgPath d:"m261.5,49.5" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" stroke:"#000" fill:"#fff"/]
-  [SvgPath stroke:"black" d:"m194.5,99.58592c296.28027,-2.82856 288.33124,16.77148 303,104.91408" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" fill:"#fff"/]
-  [SvgPath stroke:"black" d:"m194.5,247.5l261.5,-1.5" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" fill:"#fff"/]
-  [SvgPath stroke:"black" d:"m194.5,398.07526c296.28027,2.79245 288.33124,-16.55746 303,-103.57526" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" fill:"#fff"/]
-  [SvgPath stroke:"#000" d:"m544.85602,250.51953l259.19238,-1.5" opacity:"0.5" fillOpacity:"null" strokeOpacity:"null" strokeWidth:"1.5" fill:"#fff"/]
-  [SvgText value:perceptronX1 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"115.76917" x:"138.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
-  [SvgText value:perceptronX2 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"265.76926" x:"137.30751" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
-  [SvgText value:perceptronX3 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"415.00011" x:"138.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"238.12029" y:"79.57689" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]w[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"269.50491" y:"92.57689" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]1[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"238.11549" y:"225.11544" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]w[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"269.50011" y:"238.11544" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]2[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"238.11549" y:"376.11544" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]w[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"269.50011" y:"389.11544" fontSize:"32" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]3[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"288.49999" y:"80.49999" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]:[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"288.49999" y:"226.49999" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]:[/text]
-  [text fill:"#000000" stroke:"#000" strokeWidth:"0" strokeOpacity:"null" fillOpacity:"null" x:"288.49999" y:"375.49999" fontSize:"50" fontFamily:"Helvetica, Arial, sans-serif" textAnchor:"start" ]:[/text]
-  [SvgText value:perceptronW1 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"79.76917" x:"331.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
-  [SvgText value:perceptronW2 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"226.76917" x:"331.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
-  [SvgText value:perceptronW3 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"375.76917" x:"331.07674" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
-  [SvgText value:perceptronX4 textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"265.76917" x:"470" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
-  [SvgText value:"y" textAnchor:"start" fontFamily:"Helvetica, Arial, sans-serif" fontSize:"47" y:"260" x:"840" strokeOpacity:"null" strokeWidth:"0" stroke:"#000" fill:"#000000" /]
-[/SVG]
-X1: [customRange className:"slider" style:`{width: '24%'}` value:perceptronX1 min:0 max:3 step:1/]
-X2: [customRange className:"slider" style:`{width: '24%'}` value:perceptronX2 min:0 max:3 step:1 /]
-X3: [customRange className:"slider" style:`{width: '24%'}` value:perceptronX3 min:0 max:3 step:1 /]
-W1: [customRange className:"slider" style:`{width: '24%'}` value:perceptronW1 min:0 max:1 step:0.1 /]
-W2: [customRange className:"slider" style:`{width: '24%'}` value:perceptronW2 min:0 max:1 step:0.1 /]
-W3: [customRange className:"slider" style:`{width: '24%'}` value:perceptronW3 min:0 max:1 step:0.1 /]
-
-For the sake of simplicity, we will focus on one input/pixel only. 
-Of course, it is also possible to chain multiple perceptrons together.
-These are called layers and the more layers, the deeper the network which is why it is called "deep learning".
-A visualization can be found below.
-
-[pixelVisualization maxNumberOfLayers:4 hideTrainButton:true hideLearningRate:true /]
-
-So far, we have only used linear functions e.g. [equation] y = xw [/equation] but often times, deep learning adds a non-linear function to increase the prediction power e.g. [equation] y = tanh(xw) [/equation].
-These non-linear functions are called activation functions and can be added to each layer.
-For example, adding [equation] sin(x) [/equation] to each layer of a network [equation] y = (((xw_0)w_1)w_2) [/equation] results in [equation] y = sin(sin(sin(xw_0)w_1)w_2) [/equation]
-
-[var name:"showPredictionExercises" value:false /]
-[button className:"button" onClick:`showPredictionExercises ? showPredictionExercises = false : showPredictionExercises = true` style:`{display: showPredictionExercises ? "none" : "block"}`]Show Exercises[/button]
-[button className:"button" onClick:`showPredictionExercises ? showPredictionExercises = false : showPredictionExercises = true` style:`{display: showPredictionExercises ? "block" : "none"}`]Hide Exercises[/button]
-[div style:`{display: showPredictionExercises ? "block" : "none"}`]
-### Write down the equation for the following perceptron: x1=5 x2=2 w1=3 w2=4
-[equation] y = x_1w_1 + x_2w_2 = 5*3 + 2*4 = 23 [/equation] 
-
-### Draw the network y = ((xw_0)w_1)
-[img src:"./static/images/prediction_exercise_solution.png" width:200 /]
-
-### What is the equation for a (linear) single input network with five layers (including input/output)? What does it look like when you add the activation function cos(x) to each layer?
-[equation display:true] y = ((((xw_0)w_1)w_2)w_3) [/equation]
-[equation display:true] y = cos(cos(cos(cos(xw_0)w_1)w_2)w_3) [/equation]
-
-### Given network y = sin(cos(xw_0)w_1) with x=4, w0=2, and w1=6, calculate the prediction of the network.
-[equation] y = sin(cos(4*2)*6) = -0.7662601 [/equation]
-[/div]
-
-[/Step]
-[/Scroller]
-
-[Scroller currentStep:scrollerStep progress:scrollerProgress]
-[Step]
-# Gradient Descent
-
-Until now, we have learned that deep learning is based on a loss function and a prediction.
-Both can be formulated in a simple equation:
-
-[equation display:true latex:`"loss = (t-y)^2 \\ \\ where \\ \\ y = f(x)"` /]
-
-What is still missing is the actual "learning".
-Just like a student, the computer should try to improve its' grades. 
-In other words, it should minimize the loss function because the smaller the loss, the better the prediction.
-But how to minimize a function? The most straight forward answer is by taking the derivative and set it equal to zero [equation] f'(x) = 0 [/equation].
+Just like a student, the computer should try to improve its' grades (the actual "learning"). 
+In other words, it should try to minimize the loss function, because, the smaller the loss, the better the prediction.
+But how to minimize a function? The most straightforward answer is by taking the derivative and set it equal to zero [equation] loss' = 0 [/equation].
 However, this analytical approach does not work well for complex functions with millions of weights as used in deep learning.
 For this reason, an iterative approach called "gradient descent" is used. The word "gradient" is just another word for "derivative" (with multiple variables).
 Instead of setting the derivative equal to zero, the weights are adjusted step-by-step by going in the opposite direction of the derivative.
-As you may have guessed, learning is nothing more than adjusting the weights [equation] w [/equation] such that the loss gets smaller (better grades).
+As you may have guessed, "learning" is nothing more than adjusting the weights [equation] w [/equation] such that the loss gets smaller (better grades).
 
 [equation display:true] w_{new} = w_{old} - LearningRate*loss' [/equation]
 
 For example, given [equation] loss = w^2 [/equation] with derivative [equation] loss' = 2w [/equation], we have to choose a starting weight (e.g. [equation] w=1 [/equation]) and a learning rate (e.g. [equation] LearningRate=0.8 [/equation]).
 In the first step, the weight is adjusted to [equation] w_{new} = 1 - 0.8*(2*1) = -0.6 [/equation], in the second step to [equation] w_{new} = -0.6 - 0.8*(2*-0.6) = 0.36 [/equation] etc.
-As you see, the weight gradually approaches zero where the loss is the smallest.
+As you see, the weight gradually approaches zero because this is where the loss is the smallest.
 Similar to a ball rolling off a mountain, the weights change the fastest where the slope is the steepest.
 Keep in mind that the learning rate has to be large enough to make a difference each step but not too large because it can overshoot.
-A visualization with adjustable learning rate (e.g. 0.08 is relatively slow and 8.0 overshoots) can be found below.
+A visualization with adjustable learning rate (e.g. 0.1 is relatively slow and 1.1 overshoots) can be found below.
 
 [var name:"gradientVisualizationWeights" value:`[1.0]` /]
 [var name:"gradientVisualizationLearningRate" value:0.8 /]
-[gradientVisualization weights:gradientVisualizationWeights /]
+[var name:"gradientVisualizationShowCurve" value:false /]
+[gradientVisualization weights:gradientVisualizationWeights showCurve:gradientVisualizationShowCurve /]
 [div className:"centered"]
-  Learning Rate:
-  [TextInput style:`{width: '100px'}` value:gradientVisualizationLearningRate /]
+  [customRange className:"slider" value:gradientVisualizationLearningRate min:0 max:1.1 step:0.1/]
+[/div]
+[div className:"centered"]
+  Learning Rate: [Display value:gradientVisualizationLearningRate /] 
   [button className:"button" onClick:`gradientVisualizationWeights.push(gradientVisualizationWeights[gradientVisualizationWeights.length - 1] - gradientVisualizationLearningRate*2*gradientVisualizationWeights[gradientVisualizationWeights.length - 1]);`]Train[/button]
   [button className:"button" onClick:`gradientVisualizationWeights = [1.0]; gradientVisualizationLearningRate=0.8`]Reset[/button]
+  Show Line: [Boolean value:gradientVisualizationShowCurve /]
 [/div]
 
-[var name:"showGradientExercises" value:false /]
-[button className:"button" onClick:`showGradientExercises ? showGradientExercises = false : showGradientExercises = true` style:`{display: showGradientExercises ? "none" : "block"}`]Show Exercises[/button]
-[button className:"button" onClick:`showGradientExercises ? showGradientExercises = false : showGradientExercises = true` style:`{display: showGradientExercises ? "block" : "none"}`]Hide Exercises[/button]
-[div style:`{display: showGradientExercises ? "block" : "none"}`]
-### Given loss=x*w^3 with x=2, w=4, and learningRate=0.01, run three iterations of gradient descent and note the corresponding weight and loss.
-Iteration 1:
-[equation display:true] loss=2w^3=1024 [/equation] 
-[equation display:true] loss'=6w^2=384 [/equation]
-[equation display:true] w_{new} = 8 - 0.01*384 = 4.16[/equation]
-Iteration 2: 
-[equation display:true] loss=2w^3=143.98 [/equation] 
-[equation display:true] loss'=6w^2=103.83 [/equation]
-[equation display:true] w_{new} = 4.16 - 0.01*103.83 = 3.12[/equation]
-Iteration 3: 
-[equation display:true] loss=2w^3=60.84 [/equation] 
-[equation display:true] loss'=6w^2=58.47 [/equation]
-[equation display:true] w_{new} = 3.12 - 0.01*58.47 = 2.54[/equation]
-[/div]
+## Learning Task
+Use the perceptron from the previous task and visualize the gradients.
+Train the perceptron, use different learning rates and think about how the gradient is used to adjust the weight.
+
+![example](static/images/task_gradient_descent.gif)
+
+## Hints
+- What happens when the learning rate is either too small or too large?
+- What happens to the gradient when [equation] t [/equation] changes? Why is the gradient zero when [equation] t=y [/equation]?
+- What happens to the gradient when [equation] x [/equation] changes? Why is the gradient zero when [equation] x=0 [/equation]?
+- What happens to the gradient when [equation] a(x) [/equation] changes? Why is the gradient zero with [equation] a(x)=tanh(x) [/equation] and a large input (e.g. 255)?
+- Choose one specific weight and predict how it will change when you train the perceptron. [equation] w_{new} = w_{old} - LearningRate*loss' [/equation]
 
 [/Step]
-[/Scroller]
-
-[Scroller currentStep:scrollerStep progress:scrollerProgress]
 [Step]
-# Backpropagation
 
-In the last section, we have learned that gradient descent uses the derivative to minimize the loss function. 
-But what about multiple layers? This is where backpropagation is used. 
-It is a way to calculate the gradient for each layer, hence, dividing the learning accross layers.
-In a way, backpropagation is similar to a group project with a defined goal.
-Every student focuses on a subtask but depends on the others to finish the project successfully.
+## Backpropagation
 
-To get a feeling for backpropagation, you can use the interactive visualization below.
-First, change only the value of the weight [equation] w_0 [/equation] and press "Train" a few times.
-Whatever starting value you choose, the weight converges to 1.33 with loss=0 because of gradient descent. 
-Second, set the weight back to 1.0, add a layer, and train the network again.
-Now, both weights converge to 1.15 because backpropagation distributes the loss according to their gradient which is equivalent.
-Third, set [equation] w_0=0 [/equation] and [equation] w_1=0.5 [/equation]. What do you expect?
-The weight [equation] w_0 [/equation] changes faster than [equation] w_1 [/equation] because it has the larger gradient.
-After training, the weight [equation] w_0=1.11 [/equation] almost surpasses [equation] w_1=1.21 [/equation].
-Last but not least, set both weights to zero and train the network again. What happens?
-The network does not train because both gradients are zero. Feel free to try other inputs, weights, learning rates etc.
-
-[pixelVisualization numberOfLayers:backpropagationLayersInt maxNumberOfLayers:4 /]
-
-As already mentioned, training a neural network means minimizing its' loss function.
-Backpropagation is used to calculate the derivatives of the loss function and gradient descent minimizes the loss by adjusting the weights step by step.
-Because of the activation functions, the chain rule is a necessity.
-Fundamentally, backpropagation is the repeated application of the chain rule:
+Gradient descent uses the derivative to minimize the loss function. 
+But how to calculate the derivative of multiple chained perceptrons (layers)? This is where backpropagation is used. 
+Mathematically, backpropagation is simply the repeated application of the chain rule:
 
 [equation display:true] f'(x) = g'(h(x)) * h'(x) [/equation]
 
-Mathematically, it is best explained using an example. Say we start with the following loss function:
+For example, given the following network:
+
+[img src:"static/images/task_backpropagation.png" /]
+[equation display:true] n = sin((x_0*w_0)+(x_1*w_1)) [/equation]
+[equation display:true] y = sin(n*w_2) [/equation]
+
+The goal is to calculate the derivative of each weight (how much the loss changes when the weight changes).
+Due to the chain rule, it makes sense to start at the outermost weight and continue till reaching the innermost weight.
+First, we have to calculate the derivative with respect to [equation] y [/equation].
+This means that everything except [equation] y [/equation] is treated as a constant (e.g. insert numerical values such as [equation] t=5 [/equation]).
 
 [equation display:true] loss = \frac{1}{2}(t-y)^2 [/equation]
-[equation display:true] y = sin(sin(xw_0)w_1) [/equation]
-[equation display:true] t=2, x=5, w_0=2, w_1=3, learningRate=0.1 [/equation]
+[equation display:true] loss_y' = (t-y)*-y' = (t-y)*-cos(n*w_2) [/equation]
 
-The following step-by-step instructions will guide you through the process of training an artificial neural network by hand.
+Now we can calculate the derivative with respect to [equation] w_2 [/equation].
+Since we already have [equation] loss_y' [/equation], there is no need to start from scratch.
+We can simply continue at the derivative of [equation] n*w_2 [/equation], and because everything except [equation] w_2 [/equation] is treated as a constant, the derivative is just [equation] n [/equation].
 
-1 - Insert the known constants (except the target weight) and calculate the derivatives by applying chain rule. We have two weights, hence, two derivatives.
-[equation display:true] loss_{w0} = \frac{1}{2}(2-sin(sin(5w_0)3))^2 [/equation]
-[equation display:true] loss_{w0}' = (2-sin(sin(5w_0)3))(-cos(sin(5w_0)3)*(15cos(5w_0))) [/equation]
-[equation display:true] loss_{w1} = \frac{1}{2}(2-sin(sin(5*2)w_1))^2 [/equation]
-[equation display:true] loss_{w1}' = (2-sin(sin(5*2)w_1))(-cos(sin(5*2)w_1)*(sin(10))) [/equation]
-2 - Calculate the value of the derivative by inserting the target weight.
-[equation display:true] loss_{w0}' = -2.31 [/equation]
-[equation display:true] loss_{w1}' = -0.1 [/equation]
-3 - Adjust the weights by running gradient descent
-[equation display:true] w_{0 \ (new)} = 2-(0.1*-2.31) = 2.23 [/equation]
-[equation display:true] w_{1 \ (new)} = 3-(0.1*-0.1) = 3.01 [/equation]
-4 - Do steps one to three over and over again
+[equation display:true] loss_{w_2}' = loss_y'*n [/equation]
 
-[var name:"showBackpropagationExercises" value:false /]
-[button className:"button" onClick:`showBackpropagationExercises ? showBackpropagationExercises = false : showBackpropagationExercises = true` style:`{display: showBackpropagationExercises ? "none" : "block"}`]Show Exercises[/button]
-[button className:"button" onClick:`showBackpropagationExercises ? showBackpropagationExercises = false : showBackpropagationExercises = true` style:`{display: showBackpropagationExercises ? "block" : "none"}`]Hide Exercises[/button]
-[div style:`{display: showBackpropagationExercises ? "block" : "none"}`]
-### Exercise Tool
-Please use the exercise tool to create your own exercises.
-First, adjust the architecture to your needs, starting with the input [equation] x [/equation].
-The activation has to be a function of x e.g. cos(x).
-Moreover, empty weights are removed from the equation.
-Second, choose a loss function and a true value [equation] t [/equation].
-Third, set a learning rate and run gradient descent by pressing "Train".
-All formulas and variables will change according to the new weights.
-[/div]
+The next step is to calculate the derivative with respect to [equation] n [/equation].
+Again, we can build on the previous results.
+
+[equation display:true] loss_n' = loss_y'*cos((x0*w0)+(x1*w1))*w_2 [/equation]
+
+Finally, we can calculate the derivative with respect to [equation] w_0 [/equation] and [equation] w_1 [/equation].
+
+[equation display:true] loss_{x_0} = loss_n'*x_0 [/equation]
+[equation display:true] loss_{x_1}' = loss_n'*x_1 [/equation]
+
+As we can see, the derivatives build on each other which is why it is called backpropagation (backwards propagation of the errors).
+In a way, backpropagation is similar to a group project with dependent tasks.
+The first student has to finish his/her task and passes it on to the next student (dividing the learning).
+
+## Learning Task
+Try different network topologies and see how they change the flow of the gradient.
+
+![example](static/images/task_backpropagation.gif)
+
+## Hints
+For real-world deep learning projects, an understanding of the gradients is essential, especially for debugging.
+When the gradient is too small or too large, the network will not be able to learn.
+
+- What happens to the gradient when multiple perceptrons with [equation] tanh(x) [/equation] activation function are chained together? (Keyword: vanishing gradient)
+- What happens to the gradient when a weight is extremely large? Why can it break the learning of a network? (Keyword: random weights)
 
 [/Step]
-[/Scroller]
 
-## About 
-
-This article was created using [Idyll](https://idyll-lang.org), [Math.js](https://mathjs.org), and [TensorFlow.js](https://www.tensorflow.org/js).
+[/flowChart]
+[/FullWidth]

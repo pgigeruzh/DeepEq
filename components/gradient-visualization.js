@@ -8,7 +8,8 @@ class GradientVisualization extends React.PureComponent {
       <VictoryChart domain={{ x: [-1, 1], y: [0, 1] }}>
         <VictoryAxis label={weightLabel} />
         <VictoryAxis label="Loss" dependentAxis offsetY={100} />
-        <VictoryLine samples={200} y={(d) => Math.pow(d.x, 2)} />
+        {this.props.showCurve ?
+          <VictoryLine samples={200} y={(d) => Math.pow(d.x, 2)} /> : false}
         {this.props.weights.map((item, i, array) => {
           if (i > 0) {
             return <VictoryLine style={{ data: { stroke: "#c43a31" } }} data={[

@@ -14,6 +14,7 @@
     "idyll": "^4.0.0",
     "idyll-d3-component": "^2.0.0",
     "mathjs": "^7.2.0",
+    "react-aria-modal": "^4.0.0",
     "react-color": "^2.18.1",
     "react-flow-renderer": "^6.0.2",
     "react-mathjax2": "0.0.2"

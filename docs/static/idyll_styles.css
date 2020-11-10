@@ -1087,20 +1087,82 @@ img {
 }
 
 
+/* D3 Default */
 .d3-component svg {
   background: #ddd;
   max-height: 300px;
 }
-
 @media all and (max-width: 1000px) {
   .d3-component svg {
     max-height: 200px;
   }
 }
 
+/* General Styling */
+.idyll-root {
+  padding: 0;
+  margin: 0;
+}
+h3 {
+  color: black;
+}
+a {
+  color: #4CAF50;
+}
+#references h1 {
+  font-size: 1.5em;
+}
+
+/* Modal */
+.modal {
+  background: #fff;
+  outline: 0;
+  min-width: 250px;
+  max-width: 500px;
+  border-radius: 4px;
+}
+.modal-header,
+.modal-body,
+.modal-footer {
+  padding: 0.5em 1.5em;
+}
+.modal-header {
+  border-bottom: 1px solid #eee;
+}
+.modal-title {
+  margin: 0;
+}
+.modal-footer {
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+.modal--animated {
+  opacity: 0.3;
+  transform: scale(1.1) translateY(-10px);
+  -webkit-transform: scale(1.1) translateY(-10px);
+  transition: all 0.3s linear;
+  -webkit-transition: all 0.3s linear;
+}
+.modal--animated.has-entered {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  -webkit-transform: scale(1) translateY(0);
+}
+.underlay {
+  background-color: rgba(0, 0, 0, 0);
+  transition: all 0.3s linear;
+  -webkit-transition: all 0.3s linear;
+}
+.underlay.has-entered {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 /* ReactFlow General */
+.providerflow {
+  background-color: white;
+}
 .react-flow {
-  min-height: 100vh;
+  min-height: 90vh;
   margin: 0;
 }
 .react-flow__node-default .react-flow__handle {
@@ -1181,8 +1243,8 @@ img {
 .subtitle {
   font-size: 20px;
   text-align: center;
-  color: white;
-  border: 1px solid white;
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
   padding: 10px;
 }
 html {
@@ -1219,15 +1281,7 @@ html {
  
  ::-webkit-scrollbar-thumb
  {
-   background-color: #4CAF50;	
-   background-image: -webkit-linear-gradient(45deg,
-                                             rgba(255, 255, 255, .2) 25%,
-                         transparent 25%,
-                         transparent 50%,
-                         rgba(255, 255, 255, .2) 50%,
-                         rgba(255, 255, 255, .2) 75%,
-                         transparent 75%,
-                         transparent)
+   background-color: #858585;	
 }
  
 /* Table */
@@ -1247,30 +1301,6 @@ tr, th {
 table input[type=text] {
   margin: 0;
   font-weight: normal;
-}
-
-/* Scroller */
-#idyll-scroll-0 {
-  background:  #5BAFC1;
-}
-#idyll-scroll-1 {
-  background:  #7d7880;
-}
-#idyll-scroll-2 {
-  background:  #5bc19a;
-}
-#idyll-scroll-3 {
-  background:  #407b88;
-}
-#idyll-scroll-4 {
-  background:  #d19863;
-  margin-bottom: 15vh;
-}
-.idyll-scroll {
-  margin-top: 0;
-}
-.idyll-scroll-text .idyll-step {
-  margin: 0vh 0 0vh 0;
 }
 
 /* Center */
