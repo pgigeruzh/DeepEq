@@ -7,7 +7,7 @@ It contains the following files and directories (only the most important are lis
 | ---------- | ------------------------------------------------------------ |
 | index.idyll| Entrypoint file                                              |
 | styles.css | CSS stylesheet                                               |
-| components | Custom react components                                      |
+| components | Custom react components (flowchart.js is the main component) |
 | static     | Static files such as images                                  |
 | docs       | A copy of the build folder (for hosting on GitHub Pages)     |
 

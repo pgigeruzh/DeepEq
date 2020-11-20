@@ -1,7 +1,7 @@
 [meta title:"Deep Learning Theory for High School Students" description:"Deep Learning Theory for High School Students" /]
 
 [FullWidth]
-[flowChart tutorials:`["1. Perceptron", "2. Loss Function", "3. Gradient Descent", "4. Backpropagation"]`]
+[flowChart tutorials:`["1. Perceptron", "2. Loss Function", "3. Gradient Descent", "4. Backpropagation Theory", "5. Backpropagation Implementation"]`]
 
 [Step]
 
@@ -253,7 +253,7 @@ Train the perceptron, use different learning rates and think about how the gradi
 [/Step]
 [Step]
 
-## Backpropagation
+## Backpropagation Theory
 
 Gradient descent uses the derivative to minimize the loss function. 
 But how to calculate the derivative of multiple chained perceptrons (layers)? This is where backpropagation is used. 
@@ -298,7 +298,7 @@ The first student has to finish his/her task and passes it on to the next studen
 ## Learning Task
 Try different network topologies and see how they change the flow of the gradient.
 
-![example](static/images/task_backpropagation.gif)
+![example](static/images/task_backpropagation_theory.gif)
 
 ## Hints
 For real-world deep learning projects, an understanding of the gradients is essential, especially for debugging.
@@ -306,6 +306,103 @@ When the gradient is too small or too large, the network will not be able to lea
 
 - What happens to the gradient when multiple perceptrons with [equation] tanh(x) [/equation] activation function are chained together? (Keyword: vanishing gradient)
 - What happens to the gradient when a weight is extremely large? Why can it break the learning of a network? (Keyword: random weights)
+
+[/Step]
+[Step]
+
+## Backpropagation Implementation
+
+Calculating derivatives by hand is cumbersome and error-prone.
+For this reason, it is a good idea to automate this process.
+The algorithm is usually divided into forwardpropagation and backpropagation.
+The forwardpropagation starts from the inputs, calculates the value of the perceptron, and repeats this till every perceptron has a value.
+The backpropagation builds on the forwardpropagation results and calculates the derivatives of each weight.
+
+For example, a simple recursive forwardpropagation function can be found below.
+In general, the forwardpropagation algorithm is easy to implement (iteratively or recursively) because it does not rely on higher mathematics.
+Note that the provided code-examples do not save results nor apply optimization techniques (for simplicity reasons).
+
+```javascript
+function forwardpropagation(graph, node, results) {
+  // get all ingoing edges from node
+  let edges = graph.filter(e => e.target == node.id);
+  if (edges.length > 0) {
+    let sum = 0;
+    for (let j in edges) {
+      let edge = edges[j];
+      let nextNode = graph.filter(e => e.id == edge.source)[0];
+      // recursive call
+      let nextNodeValue = forwardpropagation(graph, nextNode, results);
+      // calculate weighted sum of perceptron e.g. x1*w1+...+xn*wn
+      sum += edge.data.value * nextNodeValue;
+    }
+    // result --> apply activation function e.g. a(x1*w1+...+xn*wn)
+    let value = math.evaluate(node.data.activation.replace('x', sum));
+    return value;
+  } else if (node.id.includes("x")) {
+    // stop recursion when reaching an input node
+    return node.data.value;
+  } else {
+    return NaN;
+  }
+}
+```
+
+Backpropagation is a bit trickier to implement.
+Because of the recursive nature of the chain rule, it makes sense to implement backpropagation recursively but this is completely up to you.
+An example implementation can be found below.
+
+```javascript
+function backpropagation(graph, node, forwardresults, results) {
+  // get all outgoing edges from node
+  let edges = graph.filter(element => element.source == node.id);
+  if (edges.length > 0) {
+    let totalGradient = 0.0;
+    for (let j in edges) {
+      let edge = edges[j];
+      let nextNode = graph.filter(element => element.id == edge.target)[0];
+      // recursive call
+      let nextNodeGradient = backpropagation(graph, nextNode, forwardresults, results);
+      // calculate gradient
+      let outerDerivative = math.derivative(node.data.activation, 'x');
+      totalGradient += nextNodeGradient * outerDerivative.evaluate({ x: node.data.sum }) * edge.data.value;
+      // result --> the gradient of the weight
+      let edgeGradient = nextNodeGradient * node.data.value;
+    }
+    // result --> the total gradient is returned (propagated backwards)
+    return totalGradient;
+  } else if (node.id.includes("y")) {
+    // stop recursion when reaching an output node
+    let outerDerivative = math.derivative(node.data.activation, 'x');
+    return  -1 * (node.data.true - node.data.value) * outerDerivative.evaluate({ x: node.data.sum });
+  } else {
+    return NaN;
+  }
+}
+```
+
+## Learning Task
+Implement your own version of backpropagation because it is the best way to deepen your understanding.
+
+![example](static/images/task_backpropagation_implementation.gif)
+
+## Hints
+- Feel free to have a look at the provided implementations. "Complete" supports symbolic equations whereas "Minimal" is kept as simple as possible.
+- Remember the theory! It is almost a 1:1 implementation of the theory.
+
+[equation display:true] loss_y' = (t-y)*-y' [/equation]
+
+```javascript
+let outerDerivative = math.derivative(node.data.activation, 'x');
+return  -1 * (node.data.true - node.data.value) * outerDerivative.evaluate({ x: node.data.sum });
+```
+
+[equation display:true] loss_{w_2}' = loss_y'*n [/equation]
+
+```javascript
+let edgeGradient = nextNodeGradient * node.data.value;
+```
+
 
 [/Step]
 
