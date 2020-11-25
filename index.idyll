@@ -1,4 +1,4 @@
-[meta title:"Deep Learning Theory for High School Students" description:"Deep Learning Theory for High School Students" /]
+[meta title:"DeepEq" description:"An educational platform to help students develop a mathematical intuition for deep learning" /]
 
 [FullWidth]
 [flowChart tutorials:`["1. Perceptron", "2. Loss Function", "3. Gradient Descent", "4. Backpropagation Theory", "5. Backpropagation Implementation"]`]
