@@ -50,7 +50,7 @@ class CustomRadio extends React.PureComponent {
                                 value={d.value}
                                 name={this.id}
                             />
-                            <span class="checkmark"></span>
+                            <span className="checkmark"></span>
                         </label>
                     );
                 })}

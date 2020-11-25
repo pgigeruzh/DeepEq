@@ -518,7 +518,7 @@ const FlowChart = (props) => {
                                             setRunBackpropagation(true);
                                         }}
                                     />
-                                    <span style={{ height: "20px", width: "20px" }} class="checkmark"></span>
+                                    <span style={{ height: "20px", width: "20px" }} className="checkmark"></span>
                                 </label>
                                 <label style={{ fontSize: "14px", paddingLeft: "25px", paddingRight: "10px" }} className="container">Minimal
                                     <input
@@ -531,7 +531,7 @@ const FlowChart = (props) => {
                                             setRunBackpropagation(true);
                                         }}
                                     />
-                                    <span style={{ height: "20px", width: "20px" }} class="checkmark"></span>
+                                    <span style={{ height: "20px", width: "20px" }} className="checkmark"></span>
                                 </label>
                                 <label style={{ fontSize: "14px", paddingLeft: "25px", paddingRight: "20px" }} className="container">Complete
                                     <input
@@ -544,7 +544,7 @@ const FlowChart = (props) => {
                                             setRunBackpropagation(true);
                                         }}
                                     />
-                                    <span style={{ height: "20px", width: "20px" }} class="checkmark"></span>
+                                    <span style={{ height: "20px", width: "20px" }} className="checkmark"></span>
                                 </label>
                                 <button className="button" style={{ float: "right", fontSize: "12px", margin: "0", padding: "2px 4px", borderStyle: "solid", borderWidth: "1px" }} type="button" onClick={() => { setEditorMode(!editorMode); }}>Hide</button>
                             </div>
@@ -689,12 +689,7 @@ const FlowChart = (props) => {
                                 <p></p>
                                 <div className="grid-title">Gradient Descent</div>
                                 <p></p>
-                                <MathJax.Context input='ascii'>
-                                    <div>
-                                        Loss: <MathJax.Node inline>{'sum_i 1/2 (t_i-y_i)^2 = ' + parseFloat(Number(loss).toFixed(4))}</MathJax.Node>
-                                    </div>
-                                </MathJax.Context>
-                        Learning Rate: <input style={{ width: "80px" }} type="text" value={learningRate} onChange={(e) => { setLearningRate(e.target.value) }} />
+                                Learning Rate: <input style={{ width: "80px" }} type="text" value={learningRate} onChange={(e) => { setLearningRate(e.target.value) }} />
                                 <button type="button" className="button" onClick={() => {
                                     if (elementsBackup == null) setElementsBackup(elements);
                                     setLossHistory([...lossHistory, loss]);
@@ -709,6 +704,11 @@ const FlowChart = (props) => {
                                     // run backpropagation
                                     setRunBackpropagation(true);
                                 }}>Reset</button>
+                                <MathJax.Context input='ascii'>
+                                    <div>
+                                        Loss: <MathJax.Node inline>{'sum_i 1/2 (t_i-y_i)^2 = ' + parseFloat(Number(loss).toFixed(4))}</MathJax.Node>
+                                    </div>
+                                </MathJax.Context>
                                 {!isNaN(loss) ?
                                     <VictoryChart domain={{ x: [0, Math.max(10, lossHistory.length)], y: [0, Math.max(Math.max(Math.max.apply(Math, lossHistory), 0), loss)] }}>
                                         <VictoryAxis label="iterations" />
@@ -745,7 +745,7 @@ const FlowChart = (props) => {
                                             setRunBackpropagation(true);
                                         }}
                                     />
-                                    <span style={{ height: "20px", width: "20px" }} class="checkmark"></span>
+                                    <span style={{ height: "20px", width: "20px" }} className="checkmark"></span>
                                 </label>
                                 <p></p>
                                 <label style={{ fontSize: "12px" }} className="container">Backpropagation (Gradients)
@@ -760,7 +760,7 @@ const FlowChart = (props) => {
                                             setRunBackpropagation(true);
                                         }}
                                     />
-                                    <span style={{ height: "20px", width: "20px" }} class="checkmark"></span>
+                                    <span style={{ height: "20px", width: "20px" }} className="checkmark"></span>
                                 </label>
                             </div>
                             <div>

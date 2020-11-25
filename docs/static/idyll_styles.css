@@ -1112,13 +1112,6 @@ a {
 #references h1 {
   font-size: 1.5em;
 }
-.cut-text { 
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 160px; 
-  height: 1.2em; 
-  white-space: nowrap;
-}
 
 /* Modal */
 .modal {
@@ -1456,11 +1449,9 @@ https://prismjs.com/download.html#themes=prism&languages=clike+javascript */
    word-break: normal;
    word-wrap: normal;
    line-height: 1.5;
- 
    -moz-tab-size: 4;
    -o-tab-size: 4;
    tab-size: 4;
- 
    -webkit-hyphens: none;
    -moz-hyphens: none;
    -ms-hyphens: none;
