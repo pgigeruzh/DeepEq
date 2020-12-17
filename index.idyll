@@ -76,8 +76,8 @@ where [equation] y [/equation] is the prediction. But what is the purpose of the
 It adds non-linearity, and thus, makes complex behavior possible in the first place. Why?
 Because the result of chaining two linear perceptrons together is still linear, thus, does not provide a better prediction:
 
-[equation display:true] y_1 = x*w_1 [/equation]
-[equation display:true latex:"y_2 = y_1*w_2 = x*\overbrace{w_1*w_2}^{w}" /]
+[equation display:true] y_1 = x_1*w_1 [/equation]
+[equation display:true latex:"y_2 = y_1*w_2 = x_1*\overbrace{w_1*w_2}^{w}" /]
 
 It is important to keep in mind that that the input [equation] x [/equation] represents anything a computer can measure e.g. a pixel.
 Generally, a pixel can have a value between 0 and 255 where zero means that the pixel is turned off.
@@ -95,14 +95,13 @@ A (digital) image is simply a composition of millions of pixels.
 Create a perceptron with red, green, and blue pixels as inputs and connect them to an output node.
 Try different input values, weights, and activation functions and think about the effect they have on the flow of information.
 
-![example](static/images/task_perceptron.gif)
-
-## Hints
 - What is the equation of the perceptron?
 - Use the equation to calculate the prediction value of e.g. red=255, green=120, blue=0, weights=0.5, a(x)=x. What is the interpretation?
 - Change the weight of the red pixel to 1 and all other weights to 0. What is the interpretation?
 - Use the activation function [equation] a(x)=tanh(x) [/equation]. What is the value of the prediction? How does the interpretation change? When is [equation] tanh(x) [/equation] -1 or 1?
 - Another popular activation function is called "sigmoid" ([equation] a(x)=1/(1+e^{-x}) [/equation]). Draw the sigmoid function as well as [equation] a(x)=x [/equation] and [equation] a(x)=tanh(x) [/equation]. What range can they take?
+
+![example](static/images/task_perceptron.gif)
 
 [/Step]
 [Step]
@@ -195,11 +194,10 @@ Use the perceptron from the previous task.
 Try different true values [equation] t [/equation] and think about how they affect the loss.
 Moreover, think about how the input, weights, and activation function change the loss.
 
-![example](static/images/task_loss_function.gif)
-
-## Hints
 - Because of the range of [equation] tanh(x) [/equation] (between -1 and 1), it is better to use inputs with a similar range. For example, a pixel can be represented by values between zero and one where 1 means completely turned on).
 - When is it possible for a loss to never approach zero? Try different true values and activation functions.
+
+![example](static/images/task_loss_function.gif)
 
 [/Step]
 [Step]
@@ -241,14 +239,13 @@ A visualization with adjustable learning rate (e.g. 0.1 is relatively slow and 1
 Use the perceptron from the previous task and visualize the gradients.
 Train the perceptron, use different learning rates and think about how the gradient is used to adjust the weight.
 
-![example](static/images/task_gradient_descent.gif)
-
-## Hints
 - What happens when the learning rate is either too small or too large?
 - What happens to the gradient when [equation] t [/equation] changes? Why is the gradient zero when [equation] t=y [/equation]?
 - What happens to the gradient when [equation] x [/equation] changes? Why is the gradient zero when [equation] x=0 [/equation]?
 - What happens to the gradient when [equation] a(x) [/equation] changes? Why is the gradient zero with [equation] a(x)=tanh(x) [/equation] and a large input (e.g. 255)?
 - Choose one specific weight and predict how it will change when you train the perceptron. [equation] w_{new} = w_{old} - LearningRate*loss' [/equation]
+
+![example](static/images/task_gradient_descent.gif)
 
 [/Step]
 [Step]
@@ -288,24 +285,22 @@ Again, we can build on the previous results.
 
 Finally, we can calculate the derivative with respect to [equation] w_0 [/equation] and [equation] w_1 [/equation].
 
-[equation display:true] loss_{x_0} = loss_n'*x_0 [/equation]
-[equation display:true] loss_{x_1}' = loss_n'*x_1 [/equation]
+[equation display:true] loss_{w_0}' = loss_n'*x_0 [/equation]
+[equation display:true] loss_{w_1}' = loss_n'*x_1 [/equation]
 
-As we can see, the derivatives build on each other which is why it is called backpropagation (backwards propagation of the errors).
+As we can see, the derivatives build on each other which is why it is called backpropagation (backward propagation of the errors).
 In a way, backpropagation is similar to a group project with dependent tasks.
 The first student has to finish his/her task and passes it on to the next student (dividing the learning).
 
 ## Learning Task
-Try different network topologies and see how they change the flow of the gradient.
-
-![example](static/images/task_backpropagation_theory.gif)
-
-## Hints
 For real-world deep learning projects, an understanding of the gradients is essential, especially for debugging.
 When the gradient is too small or too large, the network will not be able to learn.
+Try different network topologies and see how they change the flow of the gradient.
 
 - What happens to the gradient when multiple perceptrons with [equation] tanh(x) [/equation] activation function are chained together? (Keyword: vanishing gradient)
 - What happens to the gradient when a weight is extremely large? Why can it break the learning of a network? (Keyword: random weights)
+
+![example](static/images/task_backpropagation_theory.gif)
 
 [/Step]
 [Step]
@@ -384,9 +379,6 @@ function backpropagation(graph, node, forwardresults, results) {
 ## Learning Task
 Implement your own version of backpropagation because it is the best way to deepen your understanding.
 
-![example](static/images/task_backpropagation_implementation.gif)
-
-## Hints
 - Feel free to have a look at the provided implementations. "Complete" supports symbolic equations whereas "Minimal" is kept as simple as possible.
 - Remember the theory! It is almost a 1:1 implementation of the theory.
 
@@ -403,6 +395,7 @@ return  -1 * (node.data.true - node.data.value) * outerDerivative.evaluate({ x: 
 let edgeGradient = nextNodeGradient * node.data.value;
 ```
 
+![example](static/images/task_backpropagation_implementation.gif)
 
 [/Step]
 

@@ -299,9 +299,8 @@ let initialCustomBackpropagationAlgorithm = `
   Description: "A reference to math.js, an extensive math library for JavaScript"
   Example: derivative of tanh: math.derivative('tanh(x)', 'x');
 
- * result
+ * results
   Description: "An empty array of objects to be filled with your results"
-  Note: You do not need to use assign variables
   Values:
    - id: the id of the node or edge (mandatory)
    - sum: the weighted sum e.g. x1*w1+...+xn*wn (optional)
