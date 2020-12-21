@@ -1168,14 +1168,12 @@ a {
 .react-flow__node-default .react-flow__handle {
   background: black !important;
 }
-/*
 .react-flow__node.selected {
-  box-shadow: 0 0 3px 3px lightgreen !important;
+  box-shadow: 0 0 1px 1px rgb(0, 0, 0) !important;
 }
 .react-flow__edge.selected .react-flow__edge-path {
-  stroke: lightgreen !important;
+  stroke: rgb(0, 0, 0) !important;
 }
-*/
 .react-flow__handle {
   width: 15px !important;
   height: 15px !important;
@@ -1225,6 +1223,14 @@ a {
     width: 20%;
     min-width: 350px;
   }
+}
+/* Controls */
+.react-flow__controls {
+  left: 30px !important;
+}
+.react-flow__controls-button {
+  width: 35px !important;
+  height: 35px !important;
 }
 
 /* Exercise Creator */

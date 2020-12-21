@@ -35,10 +35,6 @@ Run `idyll`.
 Run `idyll build`. The output will appear in the top-level `build` folder.  
 (For Github-Pages: Copy the contents of the `build` folder to the `docs` folder)
 
-## Deploying
-
-Make sure your post has been built, then deploy the docs folder via any static hosting service.
-
 ## Dependencies
 
 You can install custom dependencies by running `npm install <package-name> --save`. Note that any collaborators will also need download the package locally by running `npm install` after pulling the changes.

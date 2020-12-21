@@ -696,7 +696,11 @@ const FlowChart = (props) => {
                                 }}>Train</button>
                                 <button type="button" className="button" onClick={() => {
                                     if (elementsBackup != null) {
-                                        setElements(elementsBackup);
+                                        // only reset weight values
+                                        let edges = elementsBackup.filter(element => element.source != undefined);
+                                        for (let i in edges) {
+                                            setNodeValue(edges[i].id, { value: edges[i].data.value });
+                                        }
                                         setElementsBackup(null);
                                     }
                                     setLossHistory([]);
@@ -797,7 +801,10 @@ const FlowChart = (props) => {
                         onConnect={onConnect}
                         onSelectionChange={onSelectionChange}
                         onMove={onMove}
-                    />
+                        zoomOnScroll={false}
+                    >
+                        <Controls showInteractive={false} />
+                    </ReactFlow>
                 </div>
             </ReactFlowProvider>
             {tutorialIndex != null ? <AriaModal
